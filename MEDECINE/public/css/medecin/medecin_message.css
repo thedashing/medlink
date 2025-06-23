@@ -1,0 +1,266 @@
+        :root {
+            --doctor-primary-color: #6f42c1; /* Violet profond pour les médecins */
+            --doctor-dark: #5a34a0; /* Violet plus foncé au survol */
+            --light-bg: #f8f9fa; /* Gris très clair */
+            --text-color: #343a40; /* Gris foncé */
+            --card-bg: #ffffff;
+            --shadow-light: rgba(0, 0, 0, 0.08);
+            --border-color: #e9ecef;
+            --accent-color-blue: #007bff; /* Bleu pour les liens/infos principales */
+            --accent-color-green: #28a745; /* Vert pour confirmer/envoyer */
+            --accent-color-red: #dc3545; /* Rouge pour annuler/erreur */
+            --accent-color-orange: #ffc107; /* Jaune/Orange pour en attente/non lu */
+            --accent-color-grey: #6c757d; /* Gris pour terminé */
+
+            --error-bg: #f8d7da;
+            --error-text: #721c24;
+            --success-bg: #d4edda;
+            --success-text: #155724;
+        }
+
+        body {
+            font-family: 'Roboto', sans-serif;
+            background-color: var(--light-bg);
+            margin: 0;
+            padding: 0;
+            color: var(--text-color);
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 30px auto;
+            padding: 25px;
+            background-color: var(--card-bg);
+            border-radius: 12px;
+            box-shadow: 0 6px 15px var(--shadow-light);
+        }
+
+        .header-main {
+            background-color: var(--doctor-primary-color);
+            color: white;
+            padding: 20px 30px;
+            border-radius: 10px 10px 0 0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin: -25px -25px 20px -25px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            flex-wrap: wrap;
+        }
+        .header-main h1 {
+            margin: 0;
+            font-size: 2em;
+            font-weight: 700;
+        }
+        .header-main a {
+            color: white;
+            text-decoration: none;
+            padding: 8px 15px;
+            border: 1px solid rgba(255, 255, 255, 0.5);
+            border-radius: 4px;
+            transition: background-color 0.3s ease, border-color 0.3s ease;
+            white-space: nowrap;
+        }
+        .header-main a:hover {
+            background-color: var(--doctor-dark);
+            border-color: white;
+        }
+
+        .user-info {
+            text-align: center;
+            margin-bottom: 20px;
+            font-size: 1.1em;
+            color: #555;
+            padding-top: 10px;
+        }
+
+        h2 {
+            color: var(--doctor-primary-color);
+            margin-top: 30px;
+            margin-bottom: 20px;
+            font-size: 1.8em;
+            padding-bottom: 10px;
+            border-bottom: 2px solid var(--border-color);
+        }
+
+        .message {
+            padding: 15px;
+            margin-bottom: 20px;
+            border-radius: 8px;
+            text-align: center;
+            font-weight: bold;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+        }
+        .message.success {
+            background-color: var(--success-bg);
+            color: var(--success-text);
+            border: 1px solid var(--success-text);
+        }
+        .message.error {
+            background-color: var(--error-bg);
+            color: var(--error-text);
+            border: 1px solid var(--error-text);
+        }
+
+        .form-section {
+            background-color: var(--light-bg);
+            padding: 25px;
+            border-radius: 10px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+            margin-bottom: 30px;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 500;
+            color: var(--text-color);
+            font-size: 1.05em;
+        }
+        .form-group input[type="text"],
+        .form-group select,
+        .form-group textarea {
+            width: calc(100% - 24px); /* Adjust for padding and border */
+            padding: 12px;
+            border: 1px solid var(--border-color);
+            border-radius: 6px;
+            box-sizing: border-box; /* Include padding in width */
+            font-size: 1em;
+            transition: border-color 0.3s ease, box-shadow 0.3s ease;
+        }
+        .form-group input[type="text"]:focus,
+        .form-group select:focus,
+        .form-group textarea:focus {
+            border-color: var(--doctor-primary-color);
+            box-shadow: 0 0 0 3px rgba(111, 66, 193, 0.2);
+            outline: none;
+        }
+        .form-group textarea {
+            resize: vertical;
+            min-height: 120px;
+        }
+        .form-group button {
+            background-color: var(--accent-color-green); /* Green for sending */
+            color: white;
+            padding: 12px 25px;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 1.1em;
+            font-weight: bold;
+            transition: background-color 0.3s ease, transform 0.2s ease;
+        }
+        .form-group button:hover {
+            background-color: #218838;
+            transform: translateY(-2px);
+        }
+        .form-group button:disabled {
+            background-color: #cccccc;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .message-list {
+            margin-top: 30px;
+        }
+        .message-item {
+            border: 1px solid var(--border-color);
+            padding: 20px;
+            margin-bottom: 15px;
+            border-radius: 10px;
+            background-color: var(--card-bg);
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+        .message-item:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+        }
+        .message-item.unread {
+            background-color: #fffde7; /* Light yellow for unread */
+            border-left: 5px solid var(--accent-color-orange);
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1); /* Stronger shadow for unread */
+        }
+        .message-header {
+            display: flex;
+            justify-content: space-between;
+            font-size: 0.9em;
+            color: var(--accent-color-grey);
+            margin-bottom: 10px;
+            border-bottom: 1px dashed var(--border-color);
+            padding-bottom: 8px;
+        }
+        .message-header strong {
+            color: var(--text-color);
+        }
+        .message-subject {
+            font-weight: bold;
+            margin-bottom: 10px;
+            color: var(--doctor-primary-color);
+            font-size: 1.2em;
+        }
+        .message-content {
+            white-space: pre-wrap; /* Preserve line breaks */
+            color: #444;
+            margin-bottom: 10px;
+        }
+        .message-appointment-link {
+            margin-top: 10px;
+            font-size: 0.85em;
+            color: #888;
+            text-align: right;
+            border-top: 1px dashed var(--border-color);
+            padding-top: 8px;
+        }
+        .back-link {
+            margin-top: 20px;
+            display: block;
+            text-align: center;
+            color: var(--accent-color-blue);
+            text-decoration: none;
+            font-weight: 500;
+        }
+        .back-link:hover {
+            text-decoration: underline;
+        }
+
+        /* Responsive adjustments */
+        @media (max-width: 768px) {
+            .header-main {
+                flex-direction: column;
+                align-items: flex-start;
+                padding: 15px 20px;
+            }
+            .header-main h1 {
+                font-size: 1.8em;
+                margin-bottom: 10px;
+            }
+            .header-main a {
+                width: calc(100% - 20px);
+                text-align: center;
+            }
+            .container {
+                margin: 20px 15px;
+                padding: 20px;
+            }
+            h2 {
+                font-size: 1.6em;
+            }
+            .form-group input[type="text"],
+            .form-group select,
+            .form-group textarea {
+                width: 100%;
+            }
+            .form-group button {
+                width: 100%;
+            }
+            .message-header {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 5px;
+            }
+        }

@@ -1,0 +1,309 @@
+
+        :root {
+            --doctor-primary-color: #6f42c1; /* Violet profond pour les médecins */
+            --doctor-dark: #5a34a0; /* Violet plus foncé au survol */
+            --light-bg: #f8f9fa; /* Gris très clair */
+            --text-color: #343a40; /* Gris foncé */
+            --card-bg: #ffffff;
+            --shadow-light: rgba(0, 0, 0, 0.08);
+            --border-color: #e9ecef;
+            --accent-color: #007bff; /* Bleu pour les noms de cliniques/horaires */
+            --error-bg: #f8d7da;
+            --error-text: #721c24;
+            --success-bg: #d4edda;
+            --success-text: #155724;
+            --unavailable-bg: #fff3cd; /* Jaune pâle pour l'indisponibilité */
+            --unavailable-border: #ffc107; /* Jaune plus soutenu */
+            --delete-button-bg: #dc3545;
+            --delete-button-hover: #c82333;
+        }
+
+        body {
+            font-family: 'Roboto', sans-serif;
+            background-color: var(--light-bg);
+            margin: 0;
+            padding: 0;
+            color: var(--text-color);
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 30px auto;
+            padding: 25px;
+            background-color: var(--card-bg);
+            border-radius: 12px;
+            box-shadow: 0 6px 15px var(--shadow-light);
+        }
+
+        .header-main {
+            background-color: var(--doctor-primary-color);
+            color: white;
+            padding: 20px 30px;
+            border-radius: 10px 10px 0 0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin: -25px -25px 20px -25px; /* Adjust margin to align with container */
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            flex-wrap: wrap;
+        }
+        .header-main h1 {
+            margin: 0;
+            font-size: 2em;
+            font-weight: 700;
+        }
+        .header-main a {
+            color: white;
+            text-decoration: none;
+            padding: 8px 15px;
+            border: 1px solid rgba(255, 255, 255, 0.5);
+            border-radius: 4px;
+            transition: background-color 0.3s ease, border-color 0.3s ease;
+            white-space: nowrap;
+        }
+        .header-main a:hover {
+            background-color: var(--doctor-dark);
+            border-color: white;
+        }
+
+        .user-info {
+            text-align: center;
+            margin-bottom: 20px;
+            font-size: 1.1em;
+            color: #555;
+            padding-top: 10px;
+        }
+
+        h2 {
+            color: var(--doctor-primary-color);
+            text-align: center;
+            margin-bottom: 30px;
+            font-size: 1.8em;
+            font-weight: 700;
+            padding-bottom: 10px;
+            border-bottom: 2px solid var(--doctor-primary-color);
+        }
+
+        .message {
+            padding: 15px;
+            margin-bottom: 20px;
+            border-radius: 8px;
+            text-align: center;
+            font-weight: bold;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+        }
+        .message.error {
+            background-color: var(--error-bg);
+            color: var(--error-text);
+            border: 1px solid var(--error-text);
+        }
+        .message.success {
+            background-color: var(--success-bg);
+            color: var(--success-text);
+            border: 1px solid var(--success-text);
+        }
+
+        .form-section {
+            background-color: var(--light-bg);
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: inset 0 1px 5px rgba(0,0,0,0.05);
+            margin-bottom: 30px;
+        }
+
+        .form-group {
+            margin-bottom: 18px;
+        }
+        label {
+            display: block;
+            margin-bottom: 8px;
+            color: var(--text-color);
+            font-weight: 500;
+            font-size: 1.05em;
+        }
+        input[type="datetime-local"],
+        input[type="text"] {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid var(--border-color);
+            border-radius: 6px;
+            font-size: 1em;
+            box-sizing: border-box; /* Include padding in width */
+            transition: border-color 0.3s ease, box-shadow 0.3s ease;
+        }
+        input[type="datetime-local"]:focus,
+        input[type="text"]:focus {
+            border-color: var(--doctor-primary-color);
+            box-shadow: 0 0 0 3px rgba(111, 66, 193, 0.2);
+            outline: none;
+        }
+
+        button {
+            padding: 12px 25px;
+            background-color: var(--doctor-primary-color);
+            color: white;
+            border: none;
+            border-radius: 6px;
+            font-size: 1.1em;
+            font-weight: 500;
+            cursor: pointer;
+            transition: background-color 0.3s ease, transform 0.2s ease;
+            width: auto;
+            display: block; /* Make button full width on small screens */
+            margin-top: 20px;
+        }
+        button:hover {
+            background-color: var(--doctor-dark);
+            transform: translateY(-1px);
+        }
+
+        .section-separator {
+            border: 0;
+            border-top: 1px solid var(--border-color);
+            margin: 40px 0;
+        }
+
+        /* Styles pour les plannings par clinique */
+        .clinic-schedule-group {
+            margin-bottom: 30px;
+            padding: 20px;
+            border: 1px solid var(--border-color);
+            border-radius: 10px;
+            background-color: var(--card-bg);
+            box-shadow: 0 4px 8px var(--shadow-light);
+        }
+        .clinic-schedule-group h3 {
+            color: var(--accent-color);
+            margin-top: 0;
+            margin-bottom: 15px;
+            border-bottom: 1px solid var(--border-color);
+            padding-bottom: 10px;
+            font-size: 1.5em;
+            font-weight: 600;
+        }
+        .clinic-schedule-group h3 small {
+            display: block;
+            font-size: 0.7em;
+            color: var(--secondary-text);
+            margin-top: 5px;
+        }
+        .schedule-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px 0;
+            border-bottom: 1px dashed var(--border-color);
+        }
+        .schedule-item:last-child { border-bottom: none; }
+        .schedule-item span { font-weight: 400; color: var(--text-color); font-size: 1.05em; }
+        .schedule-item strong { font-weight: 500; color: var(--doctor-primary-color); }
+
+        /* Styles pour les indisponibilités */
+        .unavailable-list { margin-top: 20px; }
+        .unavailable-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 12px 20px;
+            border: 1px solid var(--unavailable-border);
+            border-radius: 8px;
+            margin-bottom: 15px;
+            background-color: var(--unavailable-bg);
+            box-shadow: 0 2px 5px rgba(255, 193, 7, 0.1);
+        }
+        .unavailable-item span {
+            font-weight: 500;
+            color: var(--error-text);
+            flex-grow: 1;
+            padding-right: 15px;
+        }
+        .unavailable-item .delete-button {
+            background-color: var(--delete-button-bg);
+            padding: 8px 15px;
+            font-size: 0.9em;
+            margin-top: 0; /* Override previous button margin */
+            width: auto;
+            flex-shrink: 0; /* Prevent button from shrinking */
+        }
+        .unavailable-item .delete-button:hover {
+            background-color: var(--delete-button-hover);
+        }
+
+        .no-entries {
+            text-align: center;
+            padding: 30px;
+            color: var(--secondary-text);
+            font-size: 1.1em;
+            background-color: #f1f1f1;
+            border-radius: 8px;
+            margin-top: 30px;
+            box-shadow: inset 0 1px 5px rgba(0,0,0,0.03);
+        }
+        .no-entries p {
+            margin: 10px 0;
+        }
+
+        .nav-link-back {
+            display: block;
+            text-align: center;
+            margin-top: 30px;
+            color: var(--doctor-primary-color);
+            text-decoration: none;
+            font-weight: 500;
+            font-size: 1.1em;
+            padding: 10px;
+            border: 1px solid var(--doctor-primary-color);
+            border-radius: 6px;
+            transition: background-color 0.3s ease, color 0.3s ease;
+        }
+        .nav-link-back:hover {
+            background-color: var(--doctor-primary-color);
+            color: white;
+        }
+
+        /* Responsive adjustments */
+        @media (max-width: 768px) {
+            .header-main {
+                flex-direction: column;
+                align-items: flex-start;
+                padding: 15px 20px;
+            }
+            .header-main h1 {
+                font-size: 1.8em;
+                margin-bottom: 10px;
+            }
+            .header-main a {
+                width: calc(100% - 20px); /* Full width button */
+                text-align: center;
+            }
+            .container {
+                margin: 20px 15px;
+                padding: 20px;
+            }
+            h2 {
+                font-size: 1.6em;
+            }
+            .form-section {
+                padding: 15px;
+            }
+            button {
+                width: 100%;
+            }
+            .clinic-schedule-group, .unavailable-item {
+                padding: 15px;
+            }
+            .unavailable-item {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 10px;
+            }
+            .unavailable-item span {
+                padding-right: 0;
+                text-align: left;
+            }
+            .unavailable-item .delete-button {
+                width: 100%;
+            }
+        }
+  

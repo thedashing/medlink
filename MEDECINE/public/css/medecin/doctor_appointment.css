@@ -1,0 +1,100 @@
+        body { font-family: Arial, sans-serif; background-color: #f4f4f4; margin: 0; padding: 20px; color: #333; }
+        .container { max-width: 1000px; margin: 20px auto; background-color: #fff; padding: 20px; border-radius: 8px; box-shadow: 0 0 10px rgba(0,0,0,0.1); }
+        .back-to-dashboard { display: inline-block; margin-bottom: 20px; color: #007bff; text-decoration: none; font-weight: bold; }
+        .back-to-dashboard:hover { text-decoration: underline; }
+        h1 { text-align: center; color: #333; margin-bottom: 30px; }
+        .message { padding: 10px; margin-bottom: 20px; border-radius: 5px; }
+        .message.success { background-color: #d4edda; color: #155724; border: 1px solid #c3e6cb; }
+        .message.error { background-color: #f8d7da; color: #721c24; border: 1px solid #f5c6cb; }
+        .no-appointments { text-align: center; color: #666; margin-top: 50px; }
+        .appointment-day { margin-bottom: 30px; padding: 15px; background-color: #f9f9f9; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.05); }
+        .appointment-day h2 { color: #6f42c1; border-bottom: 2px solid #eee; padding-bottom: 10px; margin-top: 0; }
+        .appointment-card {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border: 1px solid #ddd;
+            padding: 15px;
+            margin-bottom: 15px;
+            border-radius: 5px;
+            background-color: #fff;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+        }
+        .appointment-card.pending { border-left: 5px solid #ffc107; } /* Jaune */
+        .appointment-card.confirmed { border-left: 5px solid #28a745; } /* Vert */
+        .appointment-card.cancelled { border-left: 5px solid #dc3545; opacity: 0.7; } /* Rouge */
+        .appointment-card.completed { border-left: 5px solid #6c757d; opacity: 0.8; } /* Gris */
+
+        .appointment-info h3 { margin-top: 0; margin-bottom: 5px; color: #007bff; }
+        .appointment-info p { margin: 0 0 5px 0; font-size: 0.95em; }
+        .appointment-actions button {
+            padding: 8px 12px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 0.9em;
+            margin-left: 10px; /* Espace entre les boutons */
+            transition: background-color 0.2s ease;
+        }
+        .btn-confirm { background-color: #28a745; color: white; }
+        .btn-confirm:hover { background-color: #218838; }
+        .btn-cancel { background-color: #dc3545; color: white; }
+        .btn-cancel:hover { background-color: #c82333; }
+        .btn-complete { background-color: #007bff; color: white; }
+        .btn-complete:hover { background-color: #0056b3; }
+        .btn-pay { background-color: #ffc107; color: #333; }
+        .btn-pay:hover { background-color: #e0a800; }
+
+        /* Styles pour la modale */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgba(0,0,0,0.4);
+            align-items: center;
+            justify-content: center;
+        }
+        .modal-content {
+            background-color: #fefefe;
+            margin: auto;
+            padding: 20px;
+            border: 1px solid #888;
+            width: 80%;
+            max-width: 500px;
+            border-radius: 10px;
+            position: relative;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+        }
+        .close-button {
+            color: #aaa;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+            position: absolute;
+            right: 15px;
+            top: 10px;
+        }
+        .close-button:hover,
+        .close-button:focus {
+            color: black;
+            text-decoration: none;
+            cursor: pointer;
+        }
+        .modal-content label { display: block; margin-bottom: 5px; font-weight: bold; }
+        .modal-content textarea { width: calc(100% - 20px); padding: 10px; margin-bottom: 15px; border: 1px solid #ddd; border-radius: 4px; resize: vertical; }
+        .modal-content button[type="submit"] {
+            background-color: #28a745;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 1em;
+            width: 100%;
+        }
+        .modal-content button[type="submit"]:hover { background-color: #218838; }
