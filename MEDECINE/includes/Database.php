@@ -6,7 +6,7 @@
 define('DB_HOST', 'localhost'); // Ou l'adresse IP de votre serveur de base de données
 define('DB_NAME', 'projet2'); // Nom de votre base de données
 define('DB_USER', 'root'); // Votre nom d'utilisateur MySQL
-define('DB_PASS', ''); 
+define('DB_PASS', 'HuntersX01!'); 
 class Database {
     private static $instance = null;
     private $conn;
