@@ -4,7 +4,7 @@
 // Inclure le fichier de vérification d'authentification
 require_once '../../includes/auth_check.php';
 require_once '../../includes/Database.php'; // Inclure la connexion à la base de données
-
+require_once 'Messaging_functions.php'; 
 // Appeler la fonction pour s'assurer que l'utilisateur est connecté ET qu'il est un patient
 require_login('patient');
 

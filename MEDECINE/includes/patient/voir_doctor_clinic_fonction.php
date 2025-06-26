@@ -3,6 +3,7 @@
 
 require_once '../../includes/auth_check.php';
 require_once '../../includes/Database.php';
+require_login('patient');
 
 // Rediriger si clinic_id n'est pas fourni dans l'URL
 if (!isset($_GET['clinic_id']) || !is_numeric($_GET['clinic_id'])) {

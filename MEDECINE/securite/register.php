@@ -20,6 +20,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $date_of_birth = htmlspecialchars(trim($_POST['date_of_birth']));
     $gender = htmlspecialchars(trim($_POST['gender']));
 
+    // Variable pour le chemin de l'image
+    $profile_image_path = null;
+
     // --- Validation basique côté serveur ---
     if (empty($email) || empty($password) || empty($confirm_password) || empty($first_name) || empty($last_name)) {
         $message = "Tous les champs obligatoires (email, mot de passe, nom, prénom) doivent être remplis.";
@@ -34,64 +37,90 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $message = "Le mot de passe doit contenir au moins 6 caractères.";
         $message_type = 'error';
     } else {
-        // Le traitement réel sera effectué par une classe ou un fichier séparé
-        // Pour l'instant, nous allons inclure le traitement ici pour la démonstration.
-        // Idéalement, cette logique devrait être dans un fichier backend/auth_process.php
-        // ou une classe User.
+        // Gérer le téléchargement de fichiers
+        if (isset($_FILES['profile_image']) && $_FILES['profile_image']['error'] == 0) {
+            $allowed_types = ['image/jpeg', 'image/png', 'image/gif'];
+            $max_size = 5 * 1024 * 1024; // 5 Mo
 
-        try {
-            $db = Database::getInstance();
-            $pdo = $db->getConnection();
+            if (in_array($_FILES['profile_image']['type'], $allowed_types) && $_FILES['profile_image']['size'] <= $max_size) {
+                $upload_dir = '../uploads/profile_images/'; // Créez ce répertoire s'il n'existe pas
+                if (!is_dir($upload_dir)) {
+                    mkdir($upload_dir, 0777, true); // Crée le répertoire récursivement avec toutes les permissions
+                }
 
-            // Vérifier si l'email existe déjà
-            $stmt = $pdo->prepare("SELECT id FROM users WHERE email = :email");
-            $stmt->execute([':email' => $email]);
-            if ($stmt->fetch()) {
-                $message = "Cet email est déjà utilisé. Veuillez en choisir un autre.";
-                $message_type = 'error';
+                $file_extension = pathinfo($_FILES['profile_image']['name'], PATHINFO_EXTENSION);
+                $new_file_name = uniqid('profile_', true) . '.' . $file_extension;
+                $target_file = $upload_dir . $new_file_name;
+
+                if (move_uploaded_file($_FILES['profile_image']['tmp_name'], $target_file)) {
+                    $profile_image_path = $new_file_name; // Stocke uniquement le nom du fichier dans la base de données
+                } else {
+                    $message = "Erreur lors du téléchargement de l'image.";
+                    $message_type = 'error';
+                }
             } else {
-                // Hacher le mot de passe
-                $password_hash = password_hash($password, PASSWORD_DEFAULT);
-                $role = 'patient'; // Le rôle est fixé pour cet exemple d'enregistrement de patient
-
-                $pdo->beginTransaction(); // Début de la transaction pour assurer l'atomicité
-
-                // 1. Insérer dans la table users
-                $stmt = $pdo->prepare("INSERT INTO users (email, password_hash, role) VALUES (:email, :password_hash, :role)");
-                $stmt->execute([
-                    ':email' => $email,
-                    ':password_hash' => $password_hash,
-                    ':role' => $role
-                ]);
-                $user_id = $pdo->lastInsertId(); // Récupérer l'ID du nouvel utilisateur
-
-                // 2. Insérer dans la table patients
-                $stmt = $pdo->prepare("INSERT INTO patients (user_id, first_name, last_name, phone, date_of_birth, gender)
-                                    VALUES (:user_id, :first_name, :last_name, :phone, :date_of_birth, :gender)");
-                $stmt->execute([
-                    ':user_id' => $user_id,
-                    ':first_name' => $first_name,
-                    ':last_name' => $last_name,
-                    ':phone' => $phone,
-                    ':date_of_birth' => $date_of_birth,
-                    ':gender' => $gender
-                ]);
-
-                $pdo->commit(); // Valider la transaction
-
-                $message = "Votre compte patient a été créé avec succès ! Vous pouvez maintenant vous connecter.";
-                $message_type = 'success';
-                // Rediriger ou effacer le formulaire
-                // header('Location: login.php'); // Rediriger vers la page de connexion
-                // exit();
+                $message = "Type de fichier non autorisé ou taille de fichier trop grande (max 5MB, JPG, PNG, GIF autorisés).";
+                $message_type = 'error';
             }
-        } catch (PDOException $e) {
-            if ($pdo->inTransaction()) {
-                $pdo->rollBack(); // Annuler la transaction en cas d'erreur
+        }
+
+        // Continuer seulement s'il n'y a pas eu d'erreurs de téléchargement de fichier, ou si aucun fichier n'a été téléchargé
+        if ($message_type !== 'error' || !isset($_FILES['profile_image']) || $_FILES['profile_image']['error'] == 4) { // Erreur 4 signifie qu'aucun fichier n'a été téléchargé
+            try {
+                $db = Database::getInstance();
+                $pdo = $db->getConnection();
+
+                // Vérifier si l'email existe déjà
+                $stmt = $pdo->prepare("SELECT id FROM users WHERE email = :email");
+                $stmt->execute([':email' => $email]);
+                if ($stmt->fetch()) {
+                    $message = "Cet email est déjà utilisé. Veuillez en choisir un autre.";
+                    $message_type = 'error';
+                } else {
+                    // Hacher le mot de passe
+                    $password_hash = password_hash($password, PASSWORD_DEFAULT);
+                    $role = 'patient'; // Le rôle est fixé pour cet exemple d'enregistrement de patient
+
+                    $pdo->beginTransaction(); // Début de la transaction pour assurer l'atomicité
+
+                    // 1. Insérer dans la table users
+                    $stmt = $pdo->prepare("INSERT INTO users (email, password_hash, role) VALUES (:email, :password_hash, :role)");
+                    $stmt->execute([
+                        ':email' => $email,
+                        ':password_hash' => $password_hash,
+                        ':role' => $role
+                    ]);
+                    $user_id = $pdo->lastInsertId(); // Récupérer l'ID du nouvel utilisateur
+
+                    // 2. Insérer dans la table patients
+                    $stmt = $pdo->prepare("INSERT INTO patients (user_id, first_name, last_name, phone, date_of_birth, gender,profile_picture)
+                                         VALUES (:user_id, :first_name, :last_name, :phone, :date_of_birth, :gender, :profile_image)");
+                    $stmt->execute([
+                        ':user_id' => $user_id,
+                        ':first_name' => $first_name,
+                        ':last_name' => $last_name,
+                        ':phone' => $phone,
+                        ':date_of_birth' => $date_of_birth,
+                        ':gender' => $gender,
+                        ':profile_image' => $profile_image_path // Ajoutez le chemin de l'image de profil ici
+                    ]);
+
+                    $pdo->commit(); // Valider la transaction
+
+                    $message = "Votre compte patient a été créé avec succès ! Vous pouvez maintenant vous connecter.";
+                    $message_type = 'success';
+                    // Rediriger ou effacer le formulaire
+                    // header('Location: login.php'); // Rediriger vers la page de connexion
+                    // exit();
+                }
+            } catch (PDOException $e) {
+                if ($pdo->inTransaction()) {
+                    $pdo->rollBack(); // Annuler la transaction en cas d'erreur
+                }
+                $message = "Une erreur est survenue lors de l'enregistrement : " . $e->getMessage();
+                $message_type = 'error';
+                // En production, loguer l'erreur et afficher un message générique.
             }
-            $message = "Une erreur est survenue lors de l'enregistrement : " . $e->getMessage();
-            $message_type = 'error';
-            // En production, loguer l'erreur et afficher un message générique.
         }
     }
 }
@@ -150,7 +179,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             </div>
         <?php endif; ?>
 
-        <form action="<?php echo htmlspecialchars($_SERVER['PHP_SELF']); ?>" method="POST">
+        <form action="<?php echo htmlspecialchars($_SERVER['PHP_SELF']); ?>" method="POST" enctype="multipart/form-data">
             <div class="form-group">
                 <label for="first_name">Prénom:</label>
                 <input type="text" id="first_name" name="first_name" required value="<?php echo htmlspecialchars($first_name ?? ''); ?>">
@@ -179,6 +208,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                     <option value="female" <?php echo (isset($gender) && $gender == 'female') ? 'selected' : ''; ?>>Femme</option>
                     <option value="other" <?php echo (isset($gender) && $gender == 'other') ? 'selected' : ''; ?>>Autre</option>
                 </select>
+            </div>
+            <div class="form-group">
+                <label for="profile_image">Image de profil:</label>
+                <input type="file" id="profile_image" name="profile_image" accept="image/jpeg,image/png,image/gif">
             </div>
             <div class="form-group">
                 <label for="password">Mot de passe:</label>

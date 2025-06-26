@@ -10,50 +10,12 @@ require_once '../../includes/patient/search_function.php';
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Medlink - Trouvez votre médecin</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-    <link rel="stylesheet" href="../../public/css/patient/test.css">
+    <link rel="stylesheet" href="../../public/css/patient/teste.css">
 
 </head>
 
 <body>
-    <header class="patient-header">
-        <div class="container">
-            <div class="logo">
-                <img src="d5.jpg" alt="Medlink Logo">
-            </div>
-            <nav class="patient-nav">
-                <ul>
-                    <li><a href="../patient/dashboard_patient.php" class="active">
-                        <i class="fas fa-search"></i> Tableau de Bord</a>
-                    </li>
-                    <li><a href="../patient/mes_rendez_vous.php">
-                        <i class="fas fa-calendar-alt"></i> Mes rendez-vous</a>
-                    </li>
-                    <li><a href="../patient/mon_dossier.php">
-                        <i class="fas fa-file-medical"></i> Mon dossier médical</a>
-                    </li> 
-                    <a href="messagerie.php">
-                    e
-                    <?php if ($unread_messages_count > 0): ?>
-                        <span class="message-badge"><?php echo $unread_messages_count; ?></span>
-                    <?php endif; ?>
-                </a>
-                        <li><a href="../securite/logout.php">
-                        <i class="fas fa-file-medical"></i> Se déconnecter</a>
-                    </li>
-                </ul>
-            </nav>
-
-            <div class="patient-account">
-                <?php if (is_logged_in()): ?>
-                <img src="d4.jpg" alt="Photo profil" class="profile-img">
-                <span><?php echo $user_email; ?></span>
-                <i class="fas fa-chevron-down"></i>
-                 <?php else: ?>
-                <p>Non connecté. <a href="../../login.php">Se connecter</a> ou <a href="../../register.php">S'inscrire</a> pour prendre rendez-vous.</p>
-            <?php endif; ?>
-            </div>
-        </div>
-    </header>
+   <?php include '../../includes/patient/entete.php'; ?>
 
     <main class="patient-main">
         <section class="search-section">

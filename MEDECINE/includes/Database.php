@@ -5,8 +5,8 @@
 // Paramètres de connexion à la base de données
 define('DB_HOST', 'localhost'); // Ou l'adresse IP de votre serveur de base de données
 define('DB_NAME', 'projet2'); // Nom de votre base de données
-define('DB_USER', 'root1'); // Votre nom d'utilisateur MySQL
-define('DB_PASS', 'HuntersX01!'); 
+define('DB_USER', 'root'); // Votre nom d'utilisateur MySQL
+define('DB_PASS', ''); 
 class Database {
     private static $instance = null;
     private $conn;

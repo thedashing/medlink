@@ -1,0 +1,233 @@
+
+                    :root {
+            --primary-color: #2a9d8f;
+            --primary-light: rgba(42, 157, 143, 0.1);
+            --secondary-color: #264653;
+            --accent-color: #e9c46a;
+            --danger-color: #e76f51;
+            --warning-color: #f4a261;
+            --success-color: #2a9d8f;
+            --light-color: #f8f9fa;
+            --dark-color: #343a40;
+            --gray-color: #6c757d;
+            --border-color: #e0e0e0;
+        }
+
+        * {   
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Roboto', sans-serif; /* Utilisation de Roboto comme demandé */
+        }
+
+        body {
+            color: var(--dark-color);
+            line-height: 1.6;
+            background-color: var(--light-color); /* Fond clair pour le corps */
+        }
+
+        .container {
+            width: 100%;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+  
+
+        /* Styles for the main content container and its elements */
+        .patient-main {
+            background-color: var(--light-color);
+            padding: 40px 0;
+            min-height: calc(100vh - 70px); /* Hauteur minimale pour que le footer ne flotte pas */
+        }
+
+        .main-content {
+            background-color: #ffffff;
+            border-radius: 8px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+            padding: 30px;
+            margin: 0 auto;
+            max-width: 1000px; /* Largeur maximale pour le contenu principal */
+        }
+
+        .system-message {
+            padding: 15px;
+            margin-bottom: 20px;
+            border-radius: 5px;
+            font-weight: 500;
+            text-align: center;
+        }
+
+        .system-message.error {
+            background-color: rgba(231, 111, 81, 0.1);
+            color: var(--danger-color);
+            border: 1px solid var(--danger-color);
+        }
+
+        .system-message.success {
+            background-color: rgba(42, 157, 143, 0.1);
+            color: var(--success-color);
+            border: 1px solid var(--success-color);
+        }
+
+        .section-title {
+            font-size: 2em;
+            color: var(--secondary-color);
+            text-align: center;
+            margin-bottom: 30px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid var(--primary-color);
+            display: block; /* Pour que la bordure prenne toute la largeur */
+            width: fit-content; /* Pour que la bordure s'adapte au texte */
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .no-records {
+            text-align: center;
+            padding: 50px 20px;
+            background-color: var(--primary-light);
+            border-radius: 8px;
+            color: var(--secondary-color);
+            font-size: 1.1em;
+            margin-top: 30px;
+            border: 1px dashed var(--primary-color);
+        }
+
+        .no-records p {
+            margin-bottom: 15px;
+        }
+
+        .no-records p:last-child {
+            margin-bottom: 0;
+            font-style: italic;
+        }
+
+        .records-list {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px; /* Espace entre les cartes */
+            justify-content: center; /* Centrer les cartes si elles ne remplissent pas une ligne complète */
+            margin-top: 30px;
+        }
+
+        .record-card {
+            background-color: #ffffff;
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+            padding: 25px;
+            flex: 1 1 calc(50% - 20px); /* Deux colonnes sur les écrans larges, ajustement pour le gap */
+            min-width: 300px; /* Largeur minimale pour éviter des cartes trop petites */
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between; /* Pour espacer le contenu verticalement */
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .record-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 6px 18px rgba(0, 0, 0, 0.12);
+        }
+
+        .record-card h3 {
+            color: var(--primary-color);
+            margin-bottom: 15px;
+            font-size: 1.5em;
+            border-bottom: 1px solid var(--primary-light);
+            padding-bottom: 10px;
+        }
+
+        .record-card p {
+            margin-bottom: 10px;
+            font-size: 0.95em;
+            color: var(--dark-color);
+        }
+
+        .record-card p strong {
+            color: var(--secondary-color);
+            margin-right: 5px;
+        }
+
+        .record-card .detail-value {
+            font-weight: 500;
+            color: var(--gray-color);
+        }
+
+        .record-card .diagnosis-notes {
+            background-color: var(--primary-light);
+            border-left: 4px solid var(--primary-color);
+            padding: 15px;
+            border-radius: 4px;
+            margin-top: 20px;
+            display: flex;
+            flex-direction: column; /* Pour les petits écrans */
+            gap: 15px;
+        }
+
+        .record-card .diagnosis-notes p {
+            margin-bottom: 0; /* Supprime le margin-bottom par défaut ici */
+        }
+        
+        /* Responsive adjustments */
+        @media (max-width: 768px) {
+            .patient-nav ul {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+            .patient-nav ul li {
+                margin: 5px 0;
+            }
+
+            .patient-header .container {
+                height: auto;
+                padding: 10px 20px;
+            }
+            .patient-account {
+                margin-top: 10px;
+            }
+
+            .records-list {
+                flex-direction: column; /* Une seule colonne sur mobile */
+                align-items: center;
+            }
+
+            .record-card {
+                flex: 1 1 90%; /* Occupe presque toute la largeur sur mobile */
+                width: 100%; /* S'assure que la carte prend bien toute la largeur disponible */
+                max-width: 400px; /* Limite la largeur sur mobile si le contenu est trop grand */
+            }
+
+            .record-card .diagnosis-notes {
+                flex-direction: column;
+            }
+
+            .section-title {
+                font-size: 1.8em;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .section-title {
+                font-size: 1.5em;
+            }
+            .patient-header {
+                height: auto;
+            }
+            .patient-header .container {
+                padding: 10px;
+            }
+            .patient-nav ul li a {
+                font-size: 14px;
+                padding: 8px;
+            }
+            .message-badge {
+                width: 18px;
+                height: 18px;
+                font-size: 0.65em;
+            }
+        }
+
+        

@@ -12,7 +12,7 @@
             --border-color: #e0e0e0;
         }
 
-        * {
+        * {   
             margin: 0;
             padding: 0;
             box-sizing: border-box;
@@ -31,7 +31,7 @@
             padding: 0 20px;
         }
 
-        /* Header styles */
+       /* Header styles */
         .patient-header {
             background-color: #264653;
             box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
@@ -71,6 +71,7 @@
             padding: 10px;
             border-radius: 5px;
             transition: all 0.3s;
+            position: relative; /* Pour positionner le badge */
         }
 
         .patient-nav ul li a i {
@@ -85,7 +86,24 @@
         .patient-nav ul li a:hover {
             color: var(--primary-color);
         }
-
+        .message-badge {
+            position: absolute;
+            top: 0px; /* Ajustez selon le design souhaité */
+            right: 0px; /* Ajustez selon le design souhaité */
+            background-color: var(--danger-color); /* Rouge pour les nouveaux messages */
+            color: white;
+            border-radius: 50%;
+            width: 20px; /* Taille légèrement réduite */
+            height: 20px; /* Taille légèrement réduite */
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.7em; /* Taille de police légèrement réduite */
+            font-weight: bold;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.2);
+            transform: translate(50%, -50%); /* Pour centrer le badge par rapport au coin */
+        }
+        /*
         .badge {
             background-color: var(--danger-color);
             color: white;
@@ -98,6 +116,7 @@
             justify-content: center;
             margin-left: 5px;
         }
+        */ /* Ceci semble être un style redondant ou alternatif */
 
         .patient-account {
             display: flex;
@@ -689,7 +708,6 @@
         /* Responsive styles */
         @media (max-width: 768px) {
             .patient-header .container {
-                flex-direction: column;
                 height: auto;
                 padding: 15px;
             }
@@ -782,18 +800,6 @@
             --clinic: #e74c3c;
             --doctor: #3498db;
             --premium: #f39c12;
-        }
-
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-        }
-
-        body {
-            background-color: #f5f6fa;
-            padding: 20px;
         }
 
         .medical-grid {

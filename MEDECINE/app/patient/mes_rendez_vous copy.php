@@ -1,71 +1,5 @@
 <?php
 require_once '../../includes/patient/rendezvous_function.php';
-
-// Supposons que ces variables soient remplies par rendezvous_function.php
-// Pour des raisons de démonstration, assurons-nous qu'elles sont définies, même si elles sont vides
-$upcoming_appointments = $upcoming_appointments ?? [];
-$past_completed_appointments = $past_completed_appointments ?? [];
-$cancelled_appointments = $cancelled_appointments ?? [];
-
-// Gérer les requêtes AJAX
-if (isset($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQUESTED_WITH']) === 'xmlhttprequest') {
-    // C'est une requête AJAX, retourner uniquement le contenu
-    header('Content-Type: application/json');
-
-    $response = [
-        'upcoming' => '',
-        'past' => '',
-        'canceled' => '',
-        'counts' => [
-            'upcoming' => count($upcoming_appointments),
-            'past' => count($past_completed_appointments),
-            'canceled' => count($cancelled_appointments)
-        ]
-    ];
-
-    ob_start(); // Démarrer la mise en mémoire tampon de la sortie pour les rendez-vous à venir
-    if (empty($upcoming_appointments)) {
-        echo '<div class="no-appointments"><p>Vous n\'avez aucun rendez-vous à venir. <a href="../../search.php">Rechercher un médecin pour prendre rendez-vous</a>.</p></div>';
-    } else {
-        foreach ($upcoming_appointments as $appointment) {
-            // Calculer la différence de temps pour la politique d'annulation (24 heures)
-            $appointment_timestamp = strtotime($appointment['appointment_datetime']);
-            $current_timestamp = time();
-            $time_diff_hours = ($appointment_timestamp - $current_timestamp) / 3600; // Différence en heures
-            $can_cancel = ($time_diff_hours > 24); // Peut annuler si plus de 24h avant
-            include '../../includes/patient/appointment_card_template.php'; // Utiliser un modèle pour la carte de rendez-vous
-        }
-    }
-    $response['upcoming'] = ob_get_clean(); // Obtenir le contenu et nettoyer la mémoire tampon
-
-    ob_start(); // Démarrer la mise en mémoire tampon de la sortie pour les rendez-vous passés
-    if (empty($past_completed_appointments)) {
-        echo '<div class="no-appointments"><p>Vous n\'avez aucun rendez-vous passé. <a href="../../search.php">Rechercher un médecin pour prendre rendez-vous</a>.</p></div>';
-    } else {
-        foreach ($past_completed_appointments as $appointment) {
-            // Note: $can_cancel n'est pas pertinent ici pour les rendez-vous passés,
-            // mais le template est réutilisé.
-            $can_cancel = false;
-            include '../../includes/patient/appointment_card_template.php'; // Utiliser un modèle pour la carte de rendez-vous
-        }
-    }
-    $response['past'] = ob_get_clean();
-
-    ob_start(); // Démarrer la mise en mémoire tampon de la sortie pour les rendez-vous annulés
-    if (empty($cancelled_appointments)) {
-        echo '<div class="no-appointments"><p>Vous n\'avez aucun rendez-vous annulé. <a href="../../search.php">Rechercher un médecin pour prendre rendez-vous</a>.</p></div>';
-    } else {
-        foreach ($cancelled_appointments as $appointment) {
-            // Note: $can_cancel n'est pas pertinent ici pour les rendez-vous annulés.
-            $can_cancel = false;
-            include '../../includes/patient/appointment_card_template.php'; // Utiliser un modèle pour la carte de rendez-vous
-        }
-    }
-    $response['canceled'] = ob_get_clean();
-
-    echo json_encode($response);
-    exit;
-}
 ?>
 <!DOCTYPE html>
 <html lang="fr">
@@ -86,18 +20,18 @@ if (isset($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQU
                     <h1>Mes rendez-vous</h1>
                     <div class="appointments-tabs">
                         <button class="tab-btn active" data-tab="upcoming-appointments-tab">
-                            <a href="#upcoming-appointments-content">À venir <span class="status-badge status-upcoming" id="upcoming-count">
-                                <?php echo count($upcoming_appointments); ?>
+                            <a href="#upcoming-appointments-content">À venir <span class="status-badge status-upcoming">
+                                <?php echo count($upcoming_appointments ?? []); // Utilisation de null coalescing pour éviter les erreurs si la variable n'est pas définie ?>
                             </span></a>
                         </button>
                         <button class="tab-btn" data-tab="past-appointments-tab">
-                            <a href="#past-appointments-content">Passés <span class="status-badge status-past" id="past-count">
-                                <?php echo count($past_completed_appointments); ?>
+                            <a href="#past-appointments-content">Passés <span class="status-badge status-past">
+                                <?php echo count($past_completed_appointments ?? []); ?>
                             </span></a>
                         </button>
                         <button class="tab-btn" data-tab="canceled-appointments-tab">
-                            <a href="#canceled-appointments-content">Annulés <span class="status-badge status-canceled" id="canceled-count">
-                                <?php echo count($cancelled_appointments); ?>
+                            <a href="#canceled-appointments-content">Annulés <span class="status-badge status-canceled">
+                                <?php echo count($cancelled_appointments ?? []); ?>
                             </span></a>
                         </button>
                     </div>
@@ -117,9 +51,10 @@ if (isset($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQU
                     <?php else: ?>
                         <?php foreach ($upcoming_appointments as $appointment): ?>
                             <?php
+                                // Calculate time difference for cancellation policy (24 hours)
                                 $appointment_timestamp = strtotime($appointment['appointment_datetime']);
                                 $current_timestamp = time();
-                                $time_diff_hours = ($appointment_timestamp - $current_timestamp) / 3600;
+                                $time_diff_hours = ($appointment_timestamp - $current_timestamp) / 3600; // Difference in hours
                                 $can_cancel = ($time_diff_hours > 24);
                             ?>
                             <div class="appointment-card upcoming">
@@ -268,9 +203,6 @@ if (isset($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQU
         document.addEventListener('DOMContentLoaded', () => {
             const tabButtons = document.querySelectorAll('.tab-btn');
             const tabContents = document.querySelectorAll('.tab-content');
-            const upcomingCountSpan = document.getElementById('upcoming-count');
-            const pastCountSpan = document.getElementById('past-count');
-            const canceledCountSpan = document.getElementById('canceled-count');
 
             // Fonction pour afficher un onglet
             const showTab = (tabId) => {
@@ -285,111 +217,21 @@ if (isset($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQU
                 document.querySelector(`.tab-btn[data-tab="${tabId.replace('-content', '-tab')}"]`).classList.add('active');
             };
 
-            // Fonction pour récupérer et mettre à jour les rendez-vous via AJAX
-            const fetchAppointments = async () => {
-                try {
-                    const response = await fetch('mes_rendez_vous.php', {
-                        headers: {
-                            'X-Requested-With': 'XMLHttpRequest' // Identifier comme requête AJAX
-                        }
-                    });
-                    const data = await response.json();
-
-                    // Mettre à jour les compteurs
-                    upcomingCountSpan.textContent = data.counts.upcoming;
-                    pastCountSpan.textContent = data.counts.past;
-                    canceledCountSpan.textContent = data.counts.canceled;
-
-                    // Mettre à jour le contenu de chaque onglet
-                    document.getElementById('upcoming-appointments-content').innerHTML = data.upcoming;
-                    document.getElementById('past-appointments-content').innerHTML = data.past;
-                    document.getElementById('canceled-appointments-content').innerHTML = data.canceled;
-
-                    // Rattacher les écouteurs d'événements pour le contenu dynamique (boutons annuler/reporter)
-                    attachActionListener();
-
-                } catch (error) {
-                    console.error('Erreur lors de la récupération des rendez-vous :', error);
-                }
-            };
-
-            // Fonction pour attacher les écouteurs d'événements aux éléments dynamiques (comme les boutons d'annulation)
-            const attachActionListener = () => {
-                const actionButtons = document.querySelectorAll('.appointment-actions .btn-outline, .appointment-actions .btn-primary');
-                actionButtons.forEach(button => {
-                    button.removeEventListener('click', handleAppointmentAction); // Empêcher les écouteurs en double
-                    button.addEventListener('click', handleAppointmentAction);
-                });
-            };
-
             // Écouteur d'événements pour les clics sur les boutons d'onglet
             tabButtons.forEach(button => {
                 button.addEventListener('click', (event) => {
-                    event.preventDefault(); // Empêcher le comportement par défaut du lien
-                    const tabId = button.dataset.tab.replace('-tab', '-content');
+                    // Empêche le comportement par défaut du lien si existant
+                    event.preventDefault();
+
+                    const tabId = button.dataset.tab.replace('-tab', '-content'); // Convertit data-tab="xxx-tab" en id="xxx-content"
                     showTab(tabId);
                 });
             });
 
-            // Gérer les actions Annuler/Reporter via AJAX
-            const handleAppointmentAction = async (event) => {
-                // Vérifier si le bouton est désactivé
-                if (event.currentTarget.classList.contains('disabled')) {
-                    event.preventDefault(); // Arrêter l'action par défaut
-                    return;
-                }
-
-                if (!confirm('Êtes-vous sûr de vouloir effectuer cette action ?')) {
-                    event.preventDefault();
-                    return;
-                }
-
-                event.preventDefault(); // Empêcher la soumission de formulaire par défaut ou la navigation de lien
-
-                const url = event.currentTarget.href;
-
-                try {
-                    const response = await fetch(url, {
-                        method: 'GET', // Ou POST si votre logique d'annulation/report le prévoit
-                        headers: {
-                            'X-Requested-With': 'XMLHttpRequest'
-                        }
-                    });
-
-                    const result = await response.json();
-
-                    if (result.status === 'success') {
-                        // Afficher le message de succès
-                        const systemMessageDiv = document.createElement('div');
-                        systemMessageDiv.classList.add('system-message', 'success');
-                        systemMessageDiv.textContent = result.message;
-                        document.querySelector('.container').prepend(systemMessageDiv); // Ajouter en haut du conteneur
-                        setTimeout(() => systemMessageDiv.remove(), 5000); // Supprimer après 5 secondes
-
-                        fetchAppointments(); // Re-récupérer tous les rendez-vous pour mettre à jour les listes et les compteurs
-                    } else {
-                        // Afficher le message d'erreur
-                        const systemMessageDiv = document.createElement('div');
-                        systemMessageDiv.classList.add('system-message', 'error');
-                        systemMessageDiv.textContent = result.message;
-                        document.querySelector('.container').prepend(systemMessageDiv);
-                        setTimeout(() => systemMessageDiv.remove(), 5000);
-                    }
-                } catch (error) {
-                    console.error('Erreur lors de l\'exécution de l\'action :', error);
-                    const systemMessageDiv = document.createElement('div');
-                    systemMessageDiv.classList.add('system-message', 'error');
-                    systemMessageDiv.textContent = 'Une erreur est survenue lors de l\'opération.';
-                    document.querySelector('.container').prepend(systemMessageDiv);
-                    setTimeout(() => systemMessageDiv.remove(), 5000);
-                }
-            };
-
-            // Chargement initial : afficher le premier onglet et récupérer les rendez-vous
+            // Afficher le premier onglet par défaut au chargement de la page
             if (tabButtons.length > 0) {
                 const initialTabId = tabButtons[0].dataset.tab.replace('-tab', '-content');
                 showTab(initialTabId);
-                fetchAppointments(); // Récupérer les rendez-vous au chargement de la page
             }
         });
     </script>

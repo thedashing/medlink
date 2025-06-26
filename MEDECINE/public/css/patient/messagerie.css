@@ -1,0 +1,401 @@
+
+        :root {
+            --primary-color: #2a9d8f;
+            --primary-light: rgba(42, 157, 143, 0.1);
+            --secondary-color: #264653;
+            --accent-color: #e9c46a;
+            --danger-color: #e76f51;
+            --warning-color: #f4a261;
+            --success-color: #2a9d8f;
+            --light-color: #f8f9fa;
+            --dark-color: #343a40;
+            --gray-color: #6c757d;
+            --border-color: #e0e0e0;
+        }
+
+        * {   
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Roboto', sans-serif; /* Utilisation de Roboto */
+        }
+
+        body {
+            color: var(--dark-color);
+            line-height: 1.6;
+            background-color: var(--light-color); /* Fond clair pour le corps */
+        }
+
+        .container {
+            width: 100%;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+          .patient-header {
+        background-color: var(--secondary-color);
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        position: sticky;
+        top: 0;
+        z-index: 100;
+    }
+
+    .patient-header .container {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        height: 70px;
+        position: relative;
+    }
+
+    /* Logo styles */
+    .logo { 
+        display: flex; 
+        align-items: center; 
+        gap: 10px; 
+        text-decoration: none;
+        z-index: 101; /* Au-dessus du menu mobile */
+    }
+
+    .logo h1 {
+        font-size: 1.8em; 
+        color: #ffffff; 
+        margin: 0; 
+        font-weight: 700; 
+        letter-spacing: -0.5px; 
+    }
+
+    .logo h1 span {
+        color: var(--primary-color); 
+        font-weight: 900; 
+    }
+
+    /* Navigation styles */
+    .patient-nav {
+        display: flex;
+        align-items: center;
+    }
+
+    .patient-nav ul {
+        display: flex;
+        list-style: none;
+    }
+
+    .patient-nav ul li {
+        margin: 0 10px;
+    }
+
+    .patient-nav ul li a {
+        text-decoration: none;
+        color: #e0e0e0;
+        font-weight: 500;
+        font-size: 15px;
+        display: flex;
+        align-items: center;
+        padding: 10px;
+        border-radius: 5px;
+        transition: all 0.3s ease;
+        position: relative; 
+    }
+
+    .patient-nav ul li a i {
+        margin-right: 8px;
+    }
+
+    /* Active link style */
+    .patient-nav ul li a.active {
+        color: var(--primary-color); 
+        background-color: var(--primary-light); 
+    }
+
+    .patient-nav ul li a:hover {
+        color: var(--primary-color); 
+    }
+    
+    /* Message badge */
+    .message-badge {
+        position: absolute;
+        top: 0px; 
+        right: 0px; 
+        background-color: var(--danger-color); 
+        color: white;
+        border-radius: 50%;
+        width: 20px; 
+        height: 20px; 
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 0.7em; 
+        font-weight: bold;
+        box-shadow: 0 1px 3px rgba(0,0,0,0.2);
+        transform: translate(50%, -50%); 
+    }
+
+    /* Patient account section */
+    .patient-account {
+        display: flex;
+        align-items: center;
+        cursor: pointer;
+        padding: 5px 10px;
+        border-radius: 20px;
+        transition: all 0.3s ease; 
+        color: var(--light-color); 
+        z-index: 101; /* Au-dessus du menu mobile */
+    }
+
+    .patient-account:hover {
+        background-color: var(--primary-light); 
+    }
+
+    .profile-link {
+        display: flex;
+        align-items: center;
+        text-decoration: none;
+        color: inherit;
+    }
+
+    .patient-account img {
+        width: 32px;
+        height: 32px;
+        border-radius: 50%;
+        margin-right: 8px;
+        object-fit: cover; 
+        border: 1px solid rgba(255,255,255,0.3);
+    }
+
+    .patient-account span {
+        font-weight: 500;
+        margin-right: 5px;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        max-width: 100px;
+    }
+
+    .patient-account i {
+        font-size: 12px;
+        color: var(--light-color); 
+    }
+
+    /* Hamburger menu button */
+    .hamburger {
+        display: none;
+        cursor: pointer;
+        background: none;
+        border: none;
+        padding: 10px;
+        z-index: 101;
+    }
+
+    .hamburger span {
+        display: block;
+        width: 25px;
+        height: 3px;
+        background-color: white;
+        margin: 5px 0;
+        transition: all 0.3s ease;
+    }
+        
+     
+
+        /* --- Styles spécifiques à la messagerie --- */
+        .patient-main {
+            background-color: var(--light-color);
+            padding: 40px 0;
+            min-height: calc(100vh - 70px); 
+        }
+
+        .main-content {
+            background-color: #ffffff;
+            border-radius: 8px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+            padding: 30px;
+            margin: 0 auto;
+            max-width: 900px; /* Largeur maximale du conteneur des messages */
+        }
+
+        .section-title {
+            font-size: 2em;
+            color: var(--secondary-color);
+            text-align: center;
+            margin-bottom: 30px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid var(--primary-color);
+            display: block; 
+            width: fit-content; 
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .no-messages {
+            text-align: center;
+            padding: 50px 20px;
+            background-color: var(--primary-light);
+            border-radius: 8px;
+            color: var(--secondary-color);
+            font-size: 1.1em;
+            margin-top: 30px;
+            border: 1px dashed var(--primary-color);
+        }
+
+        .no-messages p {
+            margin-bottom: 15px;
+        }
+
+        .no-messages p:last-child {
+            margin-bottom: 0;
+            font-style: italic;
+        }
+
+        .message-list {
+            display: flex;
+            flex-direction: column;
+            gap: 15px; /* Espacement entre les messages */
+            margin-top: 30px;
+        }
+
+        .message-card {
+            background-color: #ffffff;
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+            padding: 20px;
+            cursor: pointer;
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+
+        .message-card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        }
+
+        .message-card.unread {
+            border-left: 5px solid var(--primary-color); /* Bordure colorée pour non lus */
+            background-color: var(--primary-light); /* Fond légèrement teinté pour non lus */
+        }
+
+        .message-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 10px;
+            padding-bottom: 10px;
+            border-bottom: 1px dashed var(--border-color);
+        }
+
+        .message-subject {
+            font-size: 1.25em;
+            font-weight: 700; /* Plus gras pour le sujet */
+            color: var(--secondary-color);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .message-date {
+            font-size: 0.85em;
+            color: var(--gray-color);
+            font-style: italic;
+        }
+
+        .badge {
+            background-color: var(--danger-color);
+            color: white;
+            padding: 3px 8px;
+            border-radius: 12px;
+            font-size: 0.7em;
+            font-weight: bold;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .message-info {
+            font-size: 0.9em;
+            color: var(--gray-color);
+            margin-bottom: 15px;
+        }
+
+        .message-info em {
+            font-style: normal; /* Supprime l'italique pour l'ensemble */
+        }
+
+        .message-info strong {
+            color: var(--dark-color);
+        }
+
+        .message-content {
+            font-size: 1em;
+            color: var(--dark-color);
+            line-height: 1.6;
+            white-space: pre-wrap; /* Préserve les retours à la ligne du texte */
+        }
+
+        /* Responsive adjustments */
+        @media (max-width: 768px) {
+            .patient-nav ul {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+            .patient-nav ul li {
+                margin: 5px 0;
+            }
+
+            .patient-header .container {
+                height: auto;
+                padding: 10px 20px;
+            }
+            .patient-account {
+                margin-top: 10px;
+            }
+
+            .main-content {
+                padding: 20px;
+            }
+
+            .section-title {
+                font-size: 1.8em;
+            }
+
+            .message-header {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 5px;
+            }
+
+            .message-date {
+                text-align: left;
+                width: 100%;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .section-title {
+                font-size: 1.5em;
+            }
+            .patient-header {
+                height: auto;
+            }
+            .patient-header .container {
+                padding: 10px;
+            }
+            .patient-nav ul li a {
+                font-size: 14px;
+                padding: 8px;
+            }
+            .message-badge {
+                width: 18px;
+                height: 18px;
+                font-size: 0.65em;
+            }
+            .message-card {
+                padding: 15px;
+            }
+            .message-subject {
+                font-size: 1.1em;
+            }
+            .message-info {
+                font-size: 0.85em;
+            }
+        }
+   

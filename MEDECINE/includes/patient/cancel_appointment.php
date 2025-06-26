@@ -3,6 +3,7 @@
 
 require_once '../../includes/auth_check.php';
 require_once '../../includes/Database.php';
+require_login('patient');
 
 $message = '';
 $message_type = '';

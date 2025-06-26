@@ -5,7 +5,7 @@ require_once '../../includes/auth_check.php';
 require_once '../../includes/Database.php';
 require_once 'Messaging_functions.php'; // Inclure la classe Messaging pour le compteur de messages
 
-
+require_login('patient');
 // Initialisation des variables pour éviter les notices PHP si non définies
 $user_email = isset($_SESSION['user_email']) ? htmlspecialchars($_SESSION['user_email']) : 'Invité';
 $user_id = isset($_SESSION['user_id']) ? htmlspecialchars($_SESSION['user_id']) : null;
@@ -14,7 +14,7 @@ $user_role = isset($_SESSION['user_role']) ? htmlspecialchars($_SESSION['user_ro
 $clinics = []; // Variable pour stocker les résultats de la recherche de cliniques
 $specialties = []; // Pour la liste déroulante des spécialités
 $languages = []; // Pour la liste déroulante des langues des médecins
-$message = '';
+$message = '';  
 $message_type = '';
 $unread_messages_count = 0; // Initialisation du compteur
 

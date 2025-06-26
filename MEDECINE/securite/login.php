@@ -74,7 +74,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 // Redirection après connexion réussie en fonction du rôle
                 switch ($user['role']) {
                     case 'patient':
-                        header('Location: ' . BASE_URL . 'app/patient/dashboard_patient.php');
+                        header('Location: ' . BASE_URL . 'app/patient/search.php');
                         break;
                     case 'clinic':
                         header('Location: ' . BASE_URL . 'app/clinic/dashboard_clinic.php');
