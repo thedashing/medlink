@@ -32,25 +32,35 @@ try {
         if ($_SERVER["REQUEST_METHOD"] == "POST") {
             if (isset($_POST['action'])) {
                 if ($_POST['action'] == 'add_unavailable_period') {
-                    $start_datetime = trim($_POST['start_datetime']);
-                    $end_datetime = trim($_POST['end_datetime']);
+                    $start_datetime_raw = trim($_POST['start_datetime']);
+                    $end_datetime_raw = trim($_POST['end_datetime']);
                     $reason = htmlspecialchars(trim($_POST['reason'] ?? ''));
 
-                    // Validation simple (vous devriez ajouter plus de validation côté serveur)
-                    if (!empty($start_datetime) && !empty($end_datetime)) {
-                        $dt_start = new DateTime($start_datetime);
-                        $dt_end = new DateTime($end_datetime);
+                    // Validation simple
+                    if (!empty($start_datetime_raw) && !empty($end_datetime_raw)) {
+                        
+                        // --- CORRECTION CLÉ : Utiliser createFromFormat pour gérer le format de datetime-local ---
+                        $dt_start = DateTime::createFromFormat('Y-m-d\TH:i', $start_datetime_raw);
+                        $dt_end = DateTime::createFromFormat('Y-m-d\TH:i', $end_datetime_raw);
 
-                        if ($dt_start >= $dt_end) {
+                        // Vérifier si les objets DateTime ont été créés avec succès
+                        if ($dt_start === false || $dt_end === false) {
+                            $message = "Format de date ou d'heure invalide. Assurez-vous que les champs sont remplis correctement.";
+                            $message_type = 'error';
+                        } elseif ($dt_start >= $dt_end) {
                             $message = "La date et l'heure de début doivent être antérieures à la date et l'heure de fin.";
                             $message_type = 'error';
                         } else {
+                            // Si les formats sont corrects, convertissez-les au format SQL (YYYY-MM-DD HH:MM:SS)
+                            $start_datetime_sql = $dt_start->format('Y-m-d H:i:s');
+                            $end_datetime_sql = $dt_end->format('Y-m-d H:i:s');
+
                             $stmt_insert = $pdo->prepare("INSERT INTO doctor_unavailable_periods (doctor_id, start_datetime, end_datetime, reason)
-                                                          VALUES (:doctor_id, :start_datetime, :end_datetime, :reason)");
+                                                         VALUES (:doctor_id, :start_datetime, :end_datetime, :reason)");
                             if ($stmt_insert->execute([
                                 ':doctor_id' => $doctor_id,
-                                ':start_datetime' => $start_datetime,
-                                ':end_datetime' => $end_datetime,
+                                ':start_datetime' => $start_datetime_sql, // Utilisation du format SQL
+                                ':end_datetime' => $end_datetime_sql,     // Utilisation du format SQL
                                 ':reason' => $reason
                             ])) {
                                 $message = "Période d'indisponibilité ajoutée avec succès !";
@@ -78,9 +88,16 @@ try {
                 }
             }
             // After POST, redirect to prevent form resubmission on refresh
-            header('Location: manage_schedules.php');
+            header('Location: manage_schedules.php?message=' . urlencode($message) . '&type=' . urlencode($message_type));
             exit();
         }
+        
+        // Handle message from GET redirect
+        if (isset($_GET['message']) && isset($_GET['type'])) {
+            $message = htmlspecialchars($_GET['message']);
+            $message_type = htmlspecialchars($_GET['type']);
+        }
+
 
         // --- Récupérer tous les horaires du médecin par clinique ---
         $sql_schedules = "SELECT
@@ -91,13 +108,13 @@ try {
                             c.name AS clinic_name,
                             c.address AS clinic_address,
                             c.city AS clinic_city
-                        FROM
+                         FROM
                             doctor_schedules dcs
-                        JOIN
+                         JOIN
                             clinics c ON dcs.clinic_id = c.id
-                        WHERE
+                         WHERE
                             dcs.doctor_id = :doctor_id
-                        ORDER BY
+                         ORDER BY
                             FIELD(dcs.day_of_week, 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'),
                             c.name, dcs.start_time";
 
